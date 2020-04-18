@@ -27,8 +27,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView teamBScoreNumber;
     private TextView teamBFailNumber;
 
+
+    // These will be automatically saved and restored
     @State
-    int SCORE_NUMBER_TEAM_A;    // These will be automatically saved and restored
+    int SCORE_NUMBER_TEAM_A;
     @State
     int FAIL_NUMBER_TEAM_A;
     @State
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Icepick.restoreInstanceState(this, savedInstanceState);
         //initialize Variables
-        initVariable();
+        teamButtons();
 
         // GET SAVE VALUE WHEN ROTATE SCREEN TO LANDSCAPE OR PORTRAIT
         teamAScoreNumber.setText(String.valueOf(SCORE_NUMBER_TEAM_A));
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         teamBFailNumber.setText(String.valueOf(FAIL_NUMBER_TEAM_B));
     }
 
-    private void initVariable() {
+    private void teamButtons() {
         //initialize  Buttons
         btnTeamA_1Point = findViewById(R.id.btnTeamA_1Point);
         btnTeamA_5Points = findViewById(R.id.btnTeamA_5Points);
@@ -85,6 +87,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnTeamA_1Point.setBackground(getDrawable(R.drawable.btn_player));
         btnTeamA_5Points.setBackground(getDrawable(R.drawable.btn_player));
         btnTeamA_Foul.setBackground(getDrawable(R.drawable.btn_player));
+
+
         if (status) {
             btnTeamB_1Point.setEnabled(false);
             btnTeamB_5Points.setEnabled(false);
@@ -142,9 +146,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String winner;
                 if (teamA != 0 || teamB != 0) {
                     if (teamA > teamB) {
-                        winner = "Team A";
+                        winner = getString(R.string.team_a);
                     } else {
-                        winner = "Team B";
+                        winner = getString(R.string.team_b);
                     }
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                     dialog.setTitle(getString(R.string.title_dialog));
@@ -181,37 +185,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // method to increase score TeamA
     private void setNewScoreTeamA(int score) {
-        CharSequence value = teamAScoreNumber.getText();
-        int currentScore = Integer.parseInt(value.toString());
-        SCORE_NUMBER_TEAM_A = currentScore + score;
-        Log.i("CHECK_VALUE", String.valueOf(SCORE_NUMBER_TEAM_A));
+        SCORE_NUMBER_TEAM_A = SCORE_NUMBER_TEAM_A + score;
         teamAScoreNumber.setText(String.valueOf(SCORE_NUMBER_TEAM_A));
     }
 
     // method to increase fail TeamA
     private void setNewFailTeamA() {
-        CharSequence value = teamAFailNumber.getText();
-        int currentScore = Integer.parseInt(value.toString());
-        int FAIL_NUMBER_TEAM_A = currentScore + 1;
-        Log.i("CHECK_VALUE", String.valueOf(FAIL_NUMBER_TEAM_A));
+        FAIL_NUMBER_TEAM_A = FAIL_NUMBER_TEAM_A + 1;
         teamAFailNumber.setText(String.valueOf(FAIL_NUMBER_TEAM_A));
     }
 
     // method to increase score TeamA
     private void setNewScoreTeamB(int score) {
-        CharSequence value = teamBScoreNumber.getText();
-        int currentScore = Integer.parseInt(value.toString());
-        SCORE_NUMBER_TEAM_B = currentScore + score;
-        Log.i("CHECK_VALUE", String.valueOf(SCORE_NUMBER_TEAM_B));
+        SCORE_NUMBER_TEAM_B = SCORE_NUMBER_TEAM_B + score;
         teamBScoreNumber.setText(String.valueOf(SCORE_NUMBER_TEAM_B));
     }
 
     // method to increase fail TeamA
     private void setNewFailTeamB() {
-        CharSequence value = teamBFailNumber.getText();
-        int currentScore = Integer.parseInt(value.toString());
-        FAIL_NUMBER_TEAM_B = currentScore + 1;
-        Log.i("CHECK_VALUE", String.valueOf(FAIL_NUMBER_TEAM_B));
+        FAIL_NUMBER_TEAM_B = FAIL_NUMBER_TEAM_B + 1;
         teamBFailNumber.setText(String.valueOf(FAIL_NUMBER_TEAM_B));
     }
 
