@@ -1,12 +1,16 @@
 package com.zagazig.scorekeeperapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import icepick.Icepick;
+import icepick.State;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,16 +18,37 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button btnTeamA_1Point , btnTeamA_5Points , btnTeamA_Foul , btnTeamB_1Point
-            , btnTeamB_5Points , btnTeamB_Foul , btn_EndGame;
-    private TextView teamAScoreNumber, teamAFailNumber, teamBScoreNumber, teamBFailNumber;
+    private Button btnTeamA_1Point;
+    private Button btnTeamA_5Points;
+    private Button btnTeamA_Foul;
+    private Button btnTeamB_1Point;
+    private Button btnTeamB_5Points;
+    private Button btnTeamB_Foul;
+    private Button btn_EndGame;
+
+    private TextView teamAScoreNumber;
+    private TextView teamAFailNumber;
+    private TextView teamBScoreNumber;
+    private TextView teamBFailNumber;
+
+    @State int SCORE_NUMBER_TEAM_A ;    // These will be automatically saved and restored
+    @State int FAIL_NUMBER_TEAM_A ;
+    @State int SCORE_NUMBER_TEAM_B ;
+    @State int FAIL_NUMBER_TEAM_B ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Icepick.restoreInstanceState(this, savedInstanceState);
         //initialize Variables
         initVariable();
+
+        // GET SAVE VALUE WHEN ROTATE SCREEN TO LANDSCAPE OR PORTRAIT
+        teamAScoreNumber.setText(String.valueOf(SCORE_NUMBER_TEAM_A));
+        teamAFailNumber.setText(String.valueOf(FAIL_NUMBER_TEAM_A));
+        teamBScoreNumber.setText(String.valueOf(SCORE_NUMBER_TEAM_B));
+        teamBFailNumber.setText(String.valueOf(FAIL_NUMBER_TEAM_B));
     }
 
     private void initVariable() {
@@ -34,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnTeamB_1Point =  findViewById(R.id.btnTeamB_1Point);
         btnTeamB_5Points =  findViewById(R.id.btnTeamB_5Points);
         btnTeamB_Foul =  findViewById(R.id.btnTeamB_Foul);
-        btn_EndGame =  findViewById(R.id.btn_EndGame);
+        btn_EndGame = findViewById(R.id.btn_EndGame);
 
         //initialize TextView
         teamAScoreNumber =  findViewById(R.id.teamAScoreNumber);
@@ -115,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int teamB = Integer.parseInt(valueTeamB.toString());
 
                 String winner;
-                if (teamA != 0 && teamB != 0){
+                if (teamA != 0 || teamB != 0){
                     if (teamA > teamB){
                         winner = "Team A" ;
                     }else {
@@ -124,13 +149,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                     dialog.setTitle(getString(R.string.title_dialog));
                     dialog.setMessage(getString(R.string.message_dialog) + winner);
+                    dialog.setCancelable(false);
                     dialog.setPositiveButton(getText(R.string.button_dialog), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-                            teamAScoreNumber.setText("0");
-                            teamAFailNumber.setText("0");
-                            teamBScoreNumber.setText("0");
-                            teamBFailNumber.setText("0");
+                            setDefault();
                             dialog.dismiss();
                         }
                     });
@@ -140,13 +163,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                     dialog.setTitle(getString(R.string.title_dialog_two));
                     dialog.setMessage(getString(R.string.message_dialog_two));
+                    dialog.setCancelable(false);
                     dialog.setPositiveButton(getText(R.string.button_dialog), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-                            teamAScoreNumber.setText("0");
-                            teamAFailNumber.setText("0");
-                            teamBScoreNumber.setText("0");
-                            teamBFailNumber.setText("0");
+                            setDefault();
                             dialog.dismiss();
                         }
                     });
@@ -162,35 +183,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setNewScoreTeamA(int score){
         CharSequence value = teamAScoreNumber.getText();
         int currentScore = Integer.parseInt(value.toString());
-        int scoreNumberTeamA = currentScore + score;
-        Log.i("CHECK_VALUE", String.valueOf(scoreNumberTeamA));
-        teamAScoreNumber.setText(String.valueOf(scoreNumberTeamA));
+        SCORE_NUMBER_TEAM_A = currentScore + score;
+        Log.i("CHECK_VALUE", String.valueOf(SCORE_NUMBER_TEAM_A));
+        teamAScoreNumber.setText(String.valueOf(SCORE_NUMBER_TEAM_A));
     }
 
     // method to increase fail TeamA
     private void setNewFailTeamA(){
         CharSequence value = teamAFailNumber.getText();
         int currentScore = Integer.parseInt(value.toString());
-        int failNumberTeamA = currentScore + 1;
-        Log.i("CHECK_VALUE", String.valueOf(failNumberTeamA));
-        teamAFailNumber.setText(String.valueOf(failNumberTeamA));
+        int FAIL_NUMBER_TEAM_A = currentScore + 1;
+        Log.i("CHECK_VALUE", String.valueOf(FAIL_NUMBER_TEAM_A));
+        teamAFailNumber.setText(String.valueOf(FAIL_NUMBER_TEAM_A));
     }
 
     // method to increase score TeamA
     private void setNewScoreTeamB(int score){
         CharSequence value = teamBScoreNumber.getText();
         int currentScore = Integer.parseInt(value.toString());
-        int scoreNumberTeamB = currentScore + score;
-        Log.i("CHECK_VALUE", String.valueOf(scoreNumberTeamB));
-        teamBScoreNumber.setText(String.valueOf(scoreNumberTeamB));
+        SCORE_NUMBER_TEAM_B = currentScore + score;
+        Log.i("CHECK_VALUE", String.valueOf(SCORE_NUMBER_TEAM_B));
+        teamBScoreNumber.setText(String.valueOf(SCORE_NUMBER_TEAM_B));
     }
 
     // method to increase fail TeamA
     private void setNewFailTeamB(){
         CharSequence value = teamBFailNumber.getText();
         int currentScore = Integer.parseInt(value.toString());
-        int failNumberTeamB = currentScore + 1;
-        Log.i("CHECK_VALUE", String.valueOf(failNumberTeamB));
-        teamBFailNumber.setText(String.valueOf(failNumberTeamB));
+        FAIL_NUMBER_TEAM_B = currentScore + 1;
+        Log.i("CHECK_VALUE", String.valueOf(FAIL_NUMBER_TEAM_B));
+        teamBFailNumber.setText(String.valueOf(FAIL_NUMBER_TEAM_B));
+    }
+
+    // method to set App Default
+    private void setDefault(){
+        teamAScoreNumber.setText("0");
+        teamAFailNumber.setText("0");
+        teamBScoreNumber.setText("0");
+        teamBFailNumber.setText("0");
+        btnTeamB_1Point.setEnabled(true);
+        btnTeamB_5Points.setEnabled(true);
+        btnTeamB_Foul.setEnabled(true);
+        btnTeamA_1Point.setEnabled(true);
+        btnTeamA_5Points.setEnabled(true);
+        btnTeamA_Foul.setEnabled(true);
+        btnTeamB_1Point.setBackground(getDrawable(R.drawable.btn_player));
+        btnTeamB_5Points.setBackground(getDrawable(R.drawable.btn_player));
+        btnTeamB_Foul.setBackground(getDrawable(R.drawable.btn_player));
+        btnTeamA_1Point.setBackground(getDrawable(R.drawable.btn_player));
+        btnTeamA_5Points.setBackground(getDrawable(R.drawable.btn_player));
+        btnTeamA_Foul.setBackground(getDrawable(R.drawable.btn_player));
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
     }
 }

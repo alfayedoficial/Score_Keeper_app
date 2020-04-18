@@ -10,6 +10,8 @@
 	 <dimen name="layout_text_size_18sp">18sp</dimen>
 	 <dimen name="layout_divider_height_130dp">130dp</dimen>
 	 <dimen name="layout_divider_height_280dp">280dp</dimen>
+	 <dimen name="layout_divider_height_190dp">190dp</dimen>
 	 <dimen name="layout_height_150dp">150dp</dimen>
 	 <dimen name="layout_width_150dp">150dp</dimen>
+	 <dimen name="layout_padding_3dp">3dp</dimen>
 </resources>
