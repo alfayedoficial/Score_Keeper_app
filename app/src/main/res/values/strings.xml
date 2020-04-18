@@ -1,0 +1,18 @@
+<resources>
+	 <string name="app_name">Score Keeper app</string>
+	 <string name="team_a">Team A</string>
+	 <string name="score">Score</string>
+	 <string name="foul">Foul</string>
+	 <string name="zero">0</string>
+	 <string name="team_b">Team B</string>
+	 <string name="_1_point">+1 Point</string>
+	 <string name="_5_point">+5 Point</string>
+	 <string name="end_game">End Game</string>
+
+	 <string name="title_dialog">Congratulation</string>
+	 <string name="message_dialog">Winner is </string>
+	 <string name="button_dialog">Try again</string>
+
+	 <string name="title_dialog_two">Draw the score</string>
+	 <string name="message_dialog_two">No Winner</string>
+</resources>

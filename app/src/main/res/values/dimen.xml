@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	 <dimen name="drawable_shape_radius">25dp</dimen>
+	 <dimen name="layout_width_0dp">0dp</dimen>
+	 <dimen name="layout_margin_3dp">3dp</dimen>
+	 <dimen name="layout_margin_24dp">24dp</dimen>
+	 <dimen name="layout_margin_8dp">8dp</dimen>
+	 <dimen name="layout_margin_70dp">70dp</dimen>
+	 <dimen name="layout_elevation_1dp">1dp</dimen>
+	 <dimen name="layout_text_size_18sp">18sp</dimen>
+	 <dimen name="layout_divider_height_130dp">130dp</dimen>
+	 <dimen name="layout_divider_height_280dp">280dp</dimen>
+	 <dimen name="layout_height_150dp">150dp</dimen>
+	 <dimen name="layout_width_150dp">150dp</dimen>
+</resources>
